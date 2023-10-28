@@ -2,6 +2,7 @@ package apiInterface
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -19,4 +20,5 @@ func ApiInterface() {
 	}
 	var jsonResponse map[string]any
 	json.Unmarshal([]byte(info), &jsonResponse)
+	fmt.Println(info)
 }
