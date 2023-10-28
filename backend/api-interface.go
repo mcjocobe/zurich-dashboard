@@ -1,7 +1,7 @@
 package apiInterface
 
 import (
-	"fmt"
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -17,5 +17,6 @@ func ApiInterface() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(info)
+	var jsonResponse map[string]any
+	json.Unmarshal([]byte(info), &jsonResponse)
 }
