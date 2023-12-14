@@ -20,7 +20,7 @@ function transformTimestamp(timestamp) {
 
 }
 // a function that fetches data and returns a table containing it
-function FetchTramData() {
+export function FetchTramData() {
     const [data, setData] = useState([])
     useEffect(() => {
         axios.get('http://transport.opendata.ch/v1/stationboard?station=Siemens&limit=5')
@@ -56,4 +56,28 @@ function FetchTramData() {
             </div>
     )
 }
-export default FetchTramData
+
+export function MinutesToNext(){
+    const [data, setData] = useState([])
+    useEffect(() => {
+        axios.get('http://transport.opendata.ch/v1/stationboard?station=Siemens&limit=2')
+            .then(res => setData(Array.from(res.data.stationboard)))
+            // .then(res => console.log(res.data.stationboard))
+            .catch(err => {console.log(err)})
+    }, [])
+    try {
+    var today = new Date();
+    var depart = new Date(data[0].stop.departure)
+    } catch (error) {
+    var depart = data[0]
+    depart = new Date(depart.stop.departure)
+    console.log(error)
+    }
+    // console.log(transformTimestamp(depart))
+    // departDate = new Date(depart)
+    var diffMins =  (depart - today)
+    diffMins = Math.round(((diffMins % 86400000) % 3600000) / 60000);
+    return <div className = 'container'>
+        <h1>{diffMins} min</h1>
+    </div>
+}
