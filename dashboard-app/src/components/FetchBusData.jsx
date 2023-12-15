@@ -4,7 +4,6 @@ import Table from 'react-bootstrap/Table';
 
 // a function that transforms a timestamp 2023-12-13T21:05:00+0100 into 21:05:00
 function transformTimestamp(timestamp) {
-    // if statement to check if the timestamp is null
     if (timestamp === null || timestamp === 0) {
         return ''
     }
@@ -24,10 +23,10 @@ function transformTimestamp(timestamp) {
 
 }
 // a function that fetches data and returns a table containing it
-export function FetchTramData() {
+function FetchBusData() {
     const [data, setData] = useState([])
     useEffect(() => {
-        axios.get('http://transport.opendata.ch/v1/stationboard?station=Siemens&limit=5')
+        axios.get('http://transport.opendata.ch/v1/stationboard?station=Albisrank&limit=5')
             .then(res => setData(Array.from(res.data.stationboard)))
             // .then(res => console.log(res.data.stationboard))
             .catch(err => {console.log(err)})
@@ -49,7 +48,7 @@ export function FetchTramData() {
                         data.map((item, index) => { 
                             return <tr key = {index}>
                                 <td>{item.category + item.number}</td>
-                                <td>{item.to.replace('Zürich,','')}</td>
+                                <td>{item.to.replace('Zürich','').replace(',','')}</td>
                                 <td>{transformTimestamp(item.stop.departure) + transformTimestamp(item.stop.delay)}</td>
                             </tr>
                         })
@@ -60,31 +59,4 @@ export function FetchTramData() {
             </div>
     )
 }
-
-export function MinutesToNext(){
-    const [data, setData] = useState([])
-    useEffect(() => {
-        axios.get('http://transport.opendata.ch/v1/stationboard?station=Siemens&limit=2')
-            .then(res => setData(Array.from(res.data.stationboard)))
-            // .then(res => console.log(res.data.stationboard))
-            .catch(err => {console.log(err)})
-    }, [])
-    try {
-        var today = new Date();
-        // var depart = data[0]
-        var depart = new Date(data[0].stop.departure)
-    } catch (error) {
-        // var depart = data[0]
-        // depart = new Date(depart.stop.departure)
-        console.log(error)
-    }
-    try {
-        var diffMins =  (depart - today)
-        diffMins = Math.round(((diffMins % 86400000) % 3600000) / 60000);
-    } catch (error) {
-        console.log(error)
-    }
-    return <div className = 'container'>
-        <h1>{diffMins} min</h1>
-    </div>
-}
+export default FetchBusData
