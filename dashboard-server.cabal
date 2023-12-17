@@ -29,6 +29,6 @@ executable dashboard-server
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
-    build-depends:    base ^>=4.17.2.0, http-conduit  >= 2.3.8 && < 2.4
+    build-depends:    base ^>=4.17.2.0, http-conduit >= 2.3.8 && < 2.4, json, text >= 2.0.2, bytestring
     hs-source-dirs:   app
     default-language: Haskell2010
